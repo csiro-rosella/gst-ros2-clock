@@ -1,0 +1,17 @@
+# This project uses a custom coding style
+BasedOnStyle: Google
+ColumnLimit: 96
+IndentWidth: 2
+ConstructorInitializerIndentWidth: 2
+ContinuationIndentWidth: 4
+BreakBeforeBraces: Linux
+BreakStringLiterals: false
+AllowShortIfStatementsOnASingleLine: false
+AllowAllArgumentsOnNextLine: false
+AllowShortBlocksOnASingleLine: Always
+AlwaysBreakAfterDefinitionReturnType: true
+AlignAfterOpenBracket: false
+SpaceBeforeParens: Always
+PointerAlignment: Middle
+DerivePointerAlignment: false
+AlignConsecutiveMacros: Consecutive
