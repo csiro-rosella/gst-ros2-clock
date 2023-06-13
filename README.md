@@ -5,15 +5,19 @@ timestamps received from the ROS2 `/clock` topic.
 
 ### Dependencies
 
-* ROS2 C client library - rclc
-* ROS2 C++ client library - rclcpp (optional)
-* GStreamer Core Library - currently only tested with GStreamer 1.16.3 - 1.20.3
+* ROS2 core client library - rcl (required)
+* ROS2 C client library - rclc (optional, for /clock topic subscription)
+* ROS2 C++ client library - rclcpp (optional, for C++ example)
+* GStreamer core library - currently only tested with GStreamer 1.16.3 - 1.20.3
 * rclpy - for python test script
 
-##### Ubuntu 20.04 Dependency Installation
+Tested with ROS2 Humble and Iron.
+
+##### Ubuntu 20.04 Dependency Installation (ROS2 Humble)
 ```
-sudo apt install libgstreamer1.0-dev ros-galactic-rclc ros-galactic-rclcpp ros-galactic-rosgraph-msgs
-pip install rclpy
+sudo apt install libgstreamer1.0-dev ros-humble-rcl 
+sudo apt install ros-humble-rclc ros-humble-rclcpp ros-humble-rosgraph-msgs # (optional)
+pip install rclpy # (optional)
 ```
 
 _TODO:_ Debug this dependency list
@@ -23,6 +27,14 @@ _TODO:_ Debug this dependency list
 ```bash
 meson setup build
 ninja -C build
+```
+
+The meson option `subscription_mode` is available to toggle support for using a ROS2
+topic as clock source. See meson_options.txt for more info. To disable subscription support
+run the meson command as follows:
+
+```bash
+meson setup -D subscription_mode=disabled build
 ```
 
 ### Testing

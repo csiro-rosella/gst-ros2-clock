@@ -7,7 +7,7 @@
 #include <thread>
 
 #include "gst-test-pipeline.h"
-#include "gstros2clock.h"
+#include "gstros2objclock.h"
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 
@@ -65,7 +65,7 @@ main (int argc, char * argv[])
 
   // Create GstClock reading time from rcl_clock_t object
   rcl_clock_t * rcl_clock = node->get_clock ()->get_clock_handle ();
-  GstClock * gst_ros2_clock = gst_ros2_clock_new_from_rcl_clock ("ROS2Clock", rcl_clock);
+  GstClock * gst_ros2_clock = gst_ros2_obj_clock_new ("ROS2Clock", rcl_clock);
   g_assert (gst_ros2_clock);
 
   // run gstreamer pipeline in separate thread

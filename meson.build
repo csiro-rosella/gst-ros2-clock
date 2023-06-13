@@ -3,7 +3,7 @@ project('gst-ros2clock-plugin', 'c', 'cpp',
   version : '0.1.1',
   license : 'LGPL')
 
-plugins_install_dir = join_paths(get_option('libdir'), 'gstreamer-1.0')
+
 
 # rcutils, depended on by rclc, adds a dependency on the dynamic linker library
 # "dl".  This library is not supported as a built in dependency by meson before
@@ -16,11 +16,13 @@ plugins_install_dir = join_paths(get_option('libdir'), 'gstreamer-1.0')
 # See: https://github.com/fmtlib/fmt/issues/3023
 
 gst_dep = dependency('gstreamer-1.0')
-rclc_dep = dependency('rclc', required : true)
-rosgraph_msgs_dep = dependency('rosgraph_msgs', 
-  modules: ['rosgraph_msgs::rosgraph_msgs__rosidl_generator_c', 
-            'rosgraph_msgs::rosgraph_msgs__rosidl_typesupport_c'], 
-  required : true)
+rcl_dep = dependency('rcl', required : true)
+rclc_dep = dependency('rclc', required: get_option('subscription_mode'))
+
+rosgraph_msgs_dep = dependency('rosgraph_msgs',
+  modules: ['rosgraph_msgs::rosgraph_msgs__rosidl_generator_c',
+    'rosgraph_msgs::rosgraph_msgs__rosidl_typesupport_c'],
+  required: false)
 
 gst_version = meson.project_version()
 api_version = '1.0'
@@ -44,14 +46,26 @@ elif cc.has_argument('-fvisibility=hidden')
 else
   export_define = 'extern'
 endif
-
 cdata.set('GST_API_EXPORT', export_define)
+
+plugin_sources = ['src/gstros2objclock.c']
+plugin_dependencies = [gst_dep, rcl_dep]
+
+if rclc_dep.found() and rosgraph_msgs_dep.found()
+  message('Enabling subscription mode')
+  plugin_sources += ['src/gstros2subclock.c', 'src/subtimesrc.c']
+  plugin_dependencies += [rclc_dep, rosgraph_msgs_dep]
+  cdata.set_quoted('HAVE_RCLC', '1')
+endif
+
 configure_file(output : 'config.h', configuration : cdata)
 
+plugins_install_dir = join_paths(get_option('libdir'), 'gstreamer-1.0')
+
 libros2clock = library('gstros2clock',
-  ['src/gstros2clock.c', 'src/subtimesrc.c'],
+  plugin_sources,
   c_args: plugin_c_args,
-  dependencies : [gst_dep, rclc_dep, rosgraph_msgs_dep],
+  dependencies : plugin_dependencies,
   install : true,
   install_dir : plugins_install_dir,
   )

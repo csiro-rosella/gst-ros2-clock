@@ -20,8 +20,8 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef __GST_ROS2_CLOCK_H__
-#define __GST_ROS2_CLOCK_H__
+#ifndef __GST_ROS2_SUB_CLOCK_H__
+#define __GST_ROS2_SUB_CLOCK_H__
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -32,16 +32,16 @@
 
 G_BEGIN_DECLS
 
-G_DECLARE_FINAL_TYPE (GstRos2Clock, gst_ros2_clock, GST, ROS2_CLOCK, GstSystemClock)
+G_DECLARE_FINAL_TYPE (GstRos2SubClock, gst_ros2_sub_clock, GST, ROS2_SUB_CLOCK, GstSystemClock)
 
-typedef struct _GstRos2ClockPrivate GstRos2ClockPrivate;
+typedef struct _GstRos2SubClockPrivate GstRos2SubClockPrivate;
 
 /**
- * GstRos2Clock: A GstClock implementation that reports time as received
+ * GstRos2SubClock: A GstClock implementation that reports time as received
  * from the ROS2 topic /clock.
  *
  */
-struct _GstRos2Clock {
+struct _GstRos2SubClock {
   GstSystemClock clock;
 
   /*< private >*/
@@ -50,16 +50,13 @@ struct _GstRos2Clock {
 
   // keep ros2 related declarations private to avoid making ros2clock users
   // dependent on ROS2 headers
-  GstRos2ClockPrivate * priv;
+  GstRos2SubClockPrivate * priv;
 
   gpointer _gst_reserved[GST_PADDING];
 };
 
-GST_API_EXPORT GstClock * gst_ros2_clock_new_from_subscription (const gchar * name,
-    const gchar * topic);
-GST_API_EXPORT GstClock * gst_ros2_clock_new_from_rcl_clock (const gchar * name,
-    void * rcl_clock);
+GST_API_EXPORT GstClock * gst_ros2_sub_clock_new (const gchar * name, const gchar * topic);
 
 G_END_DECLS
 
-#endif /* __GST_ROS2_CLOCK_H__ */
+#endif /* __GST_ROS2_SUB_CLOCK_H__ */

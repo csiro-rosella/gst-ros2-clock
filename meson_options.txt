@@ -1,0 +1,13 @@
+# subscription_mode
+# 
+# Toggle support for acquiring time by receiving clock messages on a ROS2 topic.
+# 
+# enabled:  Include support for receiving clock messages via subscription
+#           (requires the rclc library for receiving clock messages)
+#
+# disabled: Do not include support for receiving clock messages via subscription
+#
+# auto:     Include subscription support if required libraries are found
+#
+option('subscription_mode', type : 'feature', value : 'auto')
+

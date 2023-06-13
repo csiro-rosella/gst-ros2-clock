@@ -5,7 +5,7 @@
 #include <stdio.h>
 
 #include "gst-test-pipeline.h"
-#include "gstros2clock.h"
+#include "gstros2subclock.h"
 
 #if 0
 static rcl_ret_t
@@ -31,7 +31,7 @@ main (int argc, char * argv[])
   /*rcl_clock_t rcl_clock;*/
   /*rcl_clock.get_now = test_get_now;*/
   /*ros2clock = gst_ros2_clock_new_from_rcl_clock ("ROS2Clock", &rcl_clock);*/
-  ros2clock = gst_ros2_clock_new_from_subscription ("ROS2Clock", "/clock");
+  ros2clock = gst_ros2_sub_clock_new ("ROS2Clock", "/clock");
   g_assert (ros2clock);
 
   launch_test_pipeline (ros2clock);
