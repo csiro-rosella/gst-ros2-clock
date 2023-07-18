@@ -21,7 +21,6 @@
  * @title: GstRos2SubClock
  * @short_description: GstClock sourcing time from ROS2 clock messages
  * or directly from a rcl_clock_t object
- * @see_also: #Gstros2BaseSink, #GstSystemClock
  *
  * #GstRos2SubClock <TODO>
  *
